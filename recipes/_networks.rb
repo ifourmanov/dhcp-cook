@@ -2,8 +2,9 @@
 #
 # Setup subnets
 #
+
 if node[:dhcp][:networks].empty?
-  raise Chef::Exceptions::AttributeNotFound, "node[:dhcp][:networks] must contain entries for dhcpd to operate"
+  Chef::Log.warn "node[:dhcp][:networks] must contain entries for dhcpd to operate"
 end
 
 node[:dhcp][:networks].each do |net|

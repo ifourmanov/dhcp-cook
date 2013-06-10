@@ -33,10 +33,12 @@ module DHCP
       end
 
       def peer
-        slave  =  slaves.first
-        Chef::Log.info "Dhcp Slave: #{slave}"
-        return nil if slave.blank?
-        slave[:ipaddress]
+        if slaves
+          slave = slaves.first
+          Chef::Log.info "Dhcp Slave: #{slave}"
+          return nil if slave.blank?
+          slave[:ipaddress]
+        end
       end
 
       def slaves
