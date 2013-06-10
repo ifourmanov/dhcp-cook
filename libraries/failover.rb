@@ -40,11 +40,15 @@ module DHCP
       end
 
       def slaves
-        search(:node, "domain:#{node[:domain]} AND dhcp_slave:true")
+        if ! Chef::Config[:solo]
+          search(:node, "domain:#{node[:domain]} AND dhcp_slave:true")
+        end
       end
 
       def masters
-        search(:node, "domain:#{node[:domain]} AND dhcp_master:true")
+        if ! Chef::Config[:solo]
+          search(:node, "domain:#{node[:domain]} AND dhcp_master:true")
+        end
       end
 
     end
