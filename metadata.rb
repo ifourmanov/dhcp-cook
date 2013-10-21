@@ -11,5 +11,4 @@ version          "2.0.1"
   supports os
 end
 
-depends "ruby-helper"
 depends "helpers-databags"

@@ -15,41 +15,6 @@ allow <%= allow %>;
   option <%= key %> <%= value %>;
 <% end -%>
 
-<% unless @keys.empty? -%>
-  <% @keys.each do |key, data| -%>
-key "<%= key %>" {
-  algorithm <%= data['algorithm'] %>;
-  secret "<%= data['secret'] %>";
-};
-  <%end -%>
-<%end -%>
-
-<% unless @masters.empty? -%>
-<% @masters.each do |zone, data| -%>
-zone <%= zone %>. {
-  primary <%= data["master"] %>;
-  key "<%= data["key"] %>";
-}
-  <% end -%>
-<% end -%>
-
-<% if @failover %>
-failover peer "<%= node[:domain] %>" { 
-  <%= @role %>; 
-  address <%= @my_ip %>;     
-  port 647;
-  peer address <%= @peer_ip %>;
-  peer port 647;
-  max-response-delay 60;
-  max-unacked-updates 10;
-  mclt 3600;
-  <% if @role =~ /primary/i -%>
-  split 128;
-  load balance max seconds 3;
-  <% end -%>
-}
-<% end %>
-
 include "<%= node[:dhcp][:dir] %>/groups.d/list.conf";
 include "<%= node[:dhcp][:dir] %>/subnets.d/list.conf";
 include "<%= node[:dhcp][:dir] %>/hosts.d/list.conf";

@@ -19,7 +19,6 @@ node[:dhcp][:networks].each do |net|
     options   net_bag["options"] || []
     range     net_bag["range"] || ""
     conf_dir  node[:dhcp][:dir]
-    peer  node[:domain] if node[:dhcp][:failover]
   end
 end
 

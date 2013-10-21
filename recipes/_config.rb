@@ -1,6 +1,4 @@
 
-DHCP::Failover.load(node)
-DHCP::DynaDns.load(node)
 
 #
 # Global DHCP config settings
@@ -14,15 +12,9 @@ template node[:dhcp][:config_file] do
     :allows => node[:dhcp][:allows] || [],
     :parameters =>  node[:dhcp][:parameters] || [],
     :options =>  node[:dhcp][:options] || [],
-    :masters => DHCP::DynaDns.masters,
-    :keys => DHCP::DynaDns.keys,
     :my_ip => node[:ipaddress],
-    :role => DHCP::Failover.role,
-    :peer_ip => DHCP::Failover.peer,
-    :failover => DHCP::Failover.enabled?
     )
   action :create
-  notifies :restart, "service[#{node[:dhcp][:service_name]}]", :delayed
 end
 
 #

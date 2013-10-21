@@ -3,9 +3,6 @@
 subnet <%= @subnet %> netmask <%= @netmask%> {
 <% unless @range.empty? -%>  
 pool {
-  <% if @peer -%>
-  failover peer "<%= node[:domain] %>"; 
-  <% end -%>
   range <%= @range %>;
 }
 <% end -%>  
