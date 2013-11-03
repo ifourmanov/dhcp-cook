@@ -1,12 +1,6 @@
 use_inline_resources 
 
-def write_include 
-  file_includes = []
-  run_context.resource_collection.each do |resource|
-    if resource.is_a? Chef::Resource::DhcpHost and resource.action == :add
-      file_includes << "#{resource.conf_dir}/hosts.d/#{resource.hostname}.conf"
-    end
-  end
+def write_include(file_includes)
 
   template "#{new_resource.conf_dir}/hosts.d/list.conf" do
     cookbook "dhcp"
@@ -15,7 +9,6 @@ def write_include
     group "root"
     mode 0644
     variables( :files => file_includes )
-    notifies :restart, "service[#{node[:dhcp][:service_name]}]", :delayed
   end
 end
 
@@ -36,9 +29,10 @@ action :add do
     owner "root"
     group "root"
     mode 0644
-    notifies :restart, "service[#{node[:dhcp][:service_name]}]", :delayed
   end
-  write_include
+  file_includes = []
+  file_includes << "#{new_resource.conf_dir}/hosts.d/#{new_resource.name}.conf"	  
+  write_include file_includes
 end
 
 action :remove do
